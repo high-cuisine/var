@@ -11,7 +11,7 @@ export class StoreService {
     const address = (data as any).address ?? (data as any).location;
 
     if (!name || !address) {
-      throw new BadRequestException('storeName/address (or storename/location) are required');
+      throw new NotFoundException('storeName/address (or storename/location) are required');
     }
 
     const query = `
