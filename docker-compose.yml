@@ -39,6 +39,11 @@ services:
     environment:
       - NODE_ENV=development
       - DATABASE_URL=postgresql://postgres:qwerty@database:5432/danyadb?schema=public
+      - POSTGRES_HOST=database
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=qwerty
+      - POSTGRES_DB=danyadb
       - JWT_SECRET=ewfpo232weokfe83
       - TELEGRAM_BOT_TOKEN=7458678779:AAFynpIWzEd3KL01rTZoysDegsxG87SgOeI
     depends_on:
