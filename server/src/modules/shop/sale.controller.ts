@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards, ParseIntPipe, BadRequestException } from '@nestjs/common';
 import { SaleService } from './sale.service';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 
@@ -35,8 +35,8 @@ export class SaleController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.saleService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.saleService.findOne(id);
   }
 
   @Get('store/:storeId/history')
@@ -48,12 +48,12 @@ export class SaleController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateSaleDto: UpdateSaleDto) {
-    return this.saleService.update(+id, updateSaleDto);
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateSaleDto: UpdateSaleDto) {
+    return this.saleService.update(id, updateSaleDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.saleService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.saleService.remove(id);
   }
 } 

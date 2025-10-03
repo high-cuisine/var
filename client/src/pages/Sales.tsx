@@ -167,7 +167,7 @@ export default function Sales() {
           </TableHead>
           <TableBody>
             {saleList.map((sale) => (
-              <TableRow key={sale.id}>
+              <TableRow key={(sale as any).id ?? (sale as any).saleid}>
                 <TableCell>
                   {productList.find((p) => ((p as any).productid ?? (p as any).id) === (((sale as any).productId ?? (sale as any).productid)))?.productname || productList.find((p) => ((p as any).id ?? (p as any).productid) === (((sale as any).productId ?? (sale as any).productid)))?.productName}
                 </TableCell>
@@ -180,7 +180,7 @@ export default function Sales() {
                   <IconButton onClick={() => handleOpen(sale)} color="primary">
                     <EditIcon />
                   </IconButton>
-                  <IconButton onClick={() => handleDelete(sale.id)} color="error">
+                  <IconButton onClick={() => handleDelete(((sale as any).id ?? (sale as any).saleid) as number)} color="error">
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>
