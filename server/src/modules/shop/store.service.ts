@@ -5,14 +5,21 @@ import { Pool } from 'pg';
 export class StoreService {
   constructor(private readonly pool: Pool) {}
 
-  async create(data: { storeName: string; address: string }) {
+  async create(data: { storeName?: string; address?: string; storename?: string; location?: string }) {
     console.log(data, 'test');
+    const name = (data as any).storeName ?? (data as any).storename;
+    const address = (data as any).address ?? (data as any).location;
+
+    if (!name || !address) {
+      throw new BadRequestException('storeName/address (or storename/location) are required');
+    }
+
     const query = `
       INSERT INTO Store (StoreName, Location)
       VALUES ($1, $2)
       RETURNING *;
     `;
-    const result = await this.pool.query(query, [data.storeName, data.address]);
+    const result = await this.pool.query(query, [name, address]);
     return result.rows[0];
   }
 
