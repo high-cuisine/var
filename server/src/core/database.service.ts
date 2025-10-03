@@ -11,7 +11,7 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
       host: process.env.POSTGRES_HOST || 'localhost',
       database: process.env.POSTGRES_DB || 'danyadb',
       password: process.env.POSTGRES_PASSWORD || 'qwerty',
-      port: parseInt(process.env.POSTGRES_PORT || '5432'),
+      port: parseInt(process.env.POSTGRES_PORT || '5433'),
     });
   }
 
