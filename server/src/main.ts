@@ -10,8 +10,21 @@ async function bootstrap() {
  
   
   // Enable CORS
+  const allowedOrigins = [
+    'http://localhost:5173', 
+    'http://client:3000',
+    'http://77.95.206.67:5173',
+    'http://77.95.206.67:3002',
+    '*'
+  ];
+  
+  // Add dynamic origins from environment
+  if (process.env.ALLOWED_ORIGINS) {
+    allowedOrigins.push(...process.env.ALLOWED_ORIGINS.split(','));
+  }
+  
   app.enableCors({
-    origin: ['http://localhost:5173', 'http://client:3000'],
+    origin: allowedOrigins,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
