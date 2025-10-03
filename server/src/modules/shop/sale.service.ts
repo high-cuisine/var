@@ -11,9 +11,7 @@ export class SaleService {
     const productId = Number((data as any).productId ?? (data as any).productid);
     const quantity = Number((data as any).quantity);
 
-    if (!Number.isFinite(storeId) || !Number.isFinite(productId) || !Number.isFinite(quantity)) {
-      throw new BadRequestException('storeId, productId and quantity are required and must be numbers');
-    }
+   
     const stockQuery = `
       SELECT 
         COALESCE(

@@ -1,16 +1,33 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards, ParseIntPipe, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards, ParseIntPipe } from '@nestjs/common';
+import { IsInt, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
 import { SaleService } from './sale.service';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 
 class CreateSaleDto {
+  @Type(() => Number)
+  @IsInt()
   storeId: number;
+
+  @Type(() => Number)
+  @IsInt()
   productId: number;
+
+  @Type(() => Number)
+  @IsInt()
   quantity: number;
+
+  @IsOptional()
   saleDate?: Date;
 }
 
 class UpdateSaleDto {
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
   quantity?: number;
+
+  @IsOptional()
   saleDate?: Date;
 }
 
