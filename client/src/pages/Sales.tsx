@@ -73,8 +73,8 @@ export default function Sales() {
     if (sale) {
       setEditingSale(sale);
       setFormData({
-        productId: sale.productId.toString(),
-        storeId: sale.storeId.toString(),
+        productId: ((sale as any).productId ?? (sale as any).productid ?? '').toString(),
+        storeId: ((sale as any).storeId ?? (sale as any).storeid ?? '').toString(),
         quantity: sale.quantity.toString(),
         saleDate: sale.saleDate.split('T')[0],
       });
@@ -169,10 +169,10 @@ export default function Sales() {
             {saleList.map((sale) => (
               <TableRow key={sale.id}>
                 <TableCell>
-                  {productList.find((p) => p.id === sale.productId)?.productName}
+                  {productList.find((p) => ((p as any).productid ?? (p as any).id) === (((sale as any).productId ?? (sale as any).productid)))?.productname || productList.find((p) => ((p as any).id ?? (p as any).productid) === (((sale as any).productId ?? (sale as any).productid)))?.productName}
                 </TableCell>
                 <TableCell>
-                  {storeList.find((s) => s.id === sale.storeId)?.storeName}
+                  {storeList.find((s) => ((s as any).storeid ?? (s as any).id) === (((sale as any).storeId ?? (sale as any).storeid)))?.storename || storeList.find((s) => ((s as any).id ?? (s as any).storeid) === (((sale as any).storeId ?? (sale as any).storeid)))?.storeName}
                 </TableCell>
                 <TableCell>{sale.quantity}</TableCell>
                 <TableCell>{new Date(sale.saleDate).toLocaleDateString()}</TableCell>
@@ -207,8 +207,8 @@ export default function Sales() {
               onChange={handleChange}
             >
               {productList.map((product) => (
-                <MenuItem key={product.id} value={product.id}>
-                  {product.productName}
+                <MenuItem key={(product as any).productid ?? (product as any).id} value={(product as any).productid ?? (product as any).id}>
+                  {(product as any).productname ?? (product as any).productName}
                 </MenuItem>
               ))}
             </TextField>
@@ -223,8 +223,8 @@ export default function Sales() {
               onChange={handleChange}
             >
               {storeList.map((store) => (
-                <MenuItem key={store.id} value={store.id}>
-                  {store.storeName}
+                <MenuItem key={(store as any).storeid ?? (store as any).id} value={(store as any).storeid ?? (store as any).id}>
+                  {(store as any).storename ?? (store as any).storeName}
                 </MenuItem>
               ))}
             </TextField>
