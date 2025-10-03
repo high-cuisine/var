@@ -1,0 +1,48 @@
+name: store-management
+version: '3.8'
+
+services:
+  database:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: danyadb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: qwerty
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "5173:3000"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:3002
+    depends_on:
+      - server
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3001"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:qwerty@database:5432/danyadb?schema=public
+      - JWT_SECRET=ewfpo232weokfe83
+      - TELEGRAM_BOT_TOKEN=7458678779:AAFynpIWzEd3KL01rTZoysDegsxG87SgOeI
+    depends_on:
+      - database
+
+volumes:
+  postgres_data:
