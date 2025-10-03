@@ -25,8 +25,13 @@ export class SaleService {
     `;
     
     const stockResult = await this.pool.query(stockQuery, [data.storeId, data.productId]);
-    
-    if (stockResult.rows[0].currentstock < data.quantity) {
+
+    if (!stockResult.rows.length) {
+      throw new NotFoundException(`Product with ID ${data.productId} not found`);
+    }
+
+    const currentStock = stockResult.rows[0].currentstock ?? 0;
+    if (currentStock < data.quantity) {
       throw new BadRequestException('Not enough stock available');
     }
 
