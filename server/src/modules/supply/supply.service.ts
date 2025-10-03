@@ -7,16 +7,25 @@ export class SupplyService {
 
   async create(data: any) {
     console.log(data, 'test');
+    const storeId = Number((data as any).storeId ?? (data as any).storeid);
+    const productId = Number((data as any).productId ?? (data as any).productid);
+    const quantity = Number((data as any).quantity);
+    const supplyDate = (data as any).supplyDate ?? (data as any).supplydate ?? new Date();
+
+    if (!Number.isFinite(storeId) || !Number.isFinite(productId) || !Number.isFinite(quantity)) {
+      throw new NotFoundException('storeId, productId and quantity are required and must be numbers');
+    }
+
     const query = `
       INSERT INTO Supply (StoreID, ProductID, Quantity, SupplyDate)
       VALUES ($1, $2, $3, $4)
       RETURNING *;
     `;
     const result = await this.pool.query(query, [
-      data.storeId,
-      data.productId,
-      data.quantity,
-      data.supplyDate || new Date(),
+      storeId,
+      productId,
+      quantity,
+      supplyDate,
     ]);
     return result.rows[0];
   }
