@@ -26,6 +26,9 @@ export class SaleController {
 
   @Post()
   create(@Body() createSaleDto: CreateSaleDto) {
+    // Debug incoming payload
+    // eslint-disable-next-line no-console
+    console.log('[SaleController] create payload:', createSaleDto);
     return this.saleService.create(createSaleDto);
   }
 

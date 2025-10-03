@@ -5,8 +5,15 @@ import { Pool } from 'pg';
 export class SaleService {
   constructor(private readonly pool: Pool) {}
 
-  async create(data: { storeId: number; productId: number; quantity: number; saleDate?: Date }) {
+  async create(data: { storeId?: number; productId?: number; quantity?: number; saleDate?: Date }) {
     // First check if there's enough stock
+    const storeId = Number((data as any).storeId ?? (data as any).storeid);
+    const productId = Number((data as any).productId ?? (data as any).productid);
+    const quantity = Number((data as any).quantity);
+
+    if (!Number.isFinite(storeId) || !Number.isFinite(productId) || !Number.isFinite(quantity)) {
+      throw new BadRequestException('storeId, productId and quantity are required and must be numbers');
+    }
     const stockQuery = `
       SELECT 
         COALESCE(
@@ -24,18 +31,18 @@ export class SaleService {
       WHERE p.ProductID = $2;
     `;
     
-    const stockResult = await this.pool.query(stockQuery, [data.storeId, data.productId]);
+    const stockResult = await this.pool.query(stockQuery, [storeId, productId]);
 
     if (!stockResult.rows.length) {
       throw new NotFoundException(`Product with ID ${data.productId} not found`);
     }
 
     const currentStock = stockResult.rows[0].currentstock ?? 0;
-    if (currentStock < data.quantity) {
+    if (currentStock < quantity) {
       throw new BadRequestException('Not enough stock available');
     }
 
-    const totalAmount = stockResult.rows[0].price * data.quantity;
+    const totalAmount = stockResult.rows[0].price * quantity;
 
     const query = `
       INSERT INTO Sale (StoreID, ProductID, Quantity, SaleDate, TotalAmount)
@@ -44,9 +51,9 @@ export class SaleService {
     `;
     
     const result = await this.pool.query(query, [
-      data.storeId,
-      data.productId,
-      data.quantity,
+      storeId,
+      productId,
+      quantity,
       data.saleDate || new Date(),
       totalAmount,
     ]);
