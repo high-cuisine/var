@@ -44,6 +44,11 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=qwerty
       - POSTGRES_DB=danyadb
+      - DB_HOST=database
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=qwerty
+      - DB_NAME=danyadb
       - JWT_SECRET=ewfpo232weokfe83
       - TELEGRAM_BOT_TOKEN=7458678779:AAFynpIWzEd3KL01rTZoysDegsxG87SgOeI
     depends_on:
