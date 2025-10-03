@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 // Create axios instance
 const api = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: 'http://77.95.206.67:3002',
 });
 
 // Request interceptor
